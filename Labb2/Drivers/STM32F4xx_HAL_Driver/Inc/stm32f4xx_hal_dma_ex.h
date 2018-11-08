@@ -1,16 +1,12 @@
 /**
   ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
+  * @file    stm32f4xx_hal_dma_ex.h
+  * @author  MCD Application Team
+  * @brief   Header file of DMA HAL extension module.
   ******************************************************************************
-  ** This notice applies to any and all portions of this file
-  * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
-  * inserted by the user or by software development tools
-  * are owned by their respective copyright owners.
+  * @attention
   *
-  * COPYRIGHT(c) 2018 STMicroelectronics
+  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -38,70 +34,87 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MAIN_H__
-#define __MAIN_H__
-
-/* Includes ------------------------------------------------------------------*/
-
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Private define ------------------------------------------------------------*/
-
-#define SEG_A_Pin GPIO_PIN_0
-#define SEG_A_GPIO_Port GPIOC
-#define SEG_B_Pin GPIO_PIN_1
-#define SEG_B_GPIO_Port GPIOC
-#define SEG_C_Pin GPIO_PIN_2
-#define SEG_C_GPIO_Port GPIOC
-#define SEG_D_Pin GPIO_PIN_3
-#define SEG_D_GPIO_Port GPIOC
-#define USART_TX_Pin GPIO_PIN_2
-#define USART_TX_GPIO_Port GPIOA
-#define USART_RX_Pin GPIO_PIN_3
-#define USART_RX_GPIO_Port GPIOA
-#define LD2_Pin GPIO_PIN_5
-#define LD2_GPIO_Port GPIOA
-#define SEG_E_Pin GPIO_PIN_4
-#define SEG_E_GPIO_Port GPIOC
-#define SEG_F_Pin GPIO_PIN_5
-#define SEG_F_GPIO_Port GPIOC
-#define Blue_Button_Pin GPIO_PIN_13
-#define Blue_Button_GPIO_Port GPIOB
-#define Blue_Button_EXTI_IRQn EXTI15_10_IRQn
-#define SEG_G_Pin GPIO_PIN_6
-#define SEG_G_GPIO_Port GPIOC
-#define SEG_H_Pin GPIO_PIN_7
-#define SEG_H_GPIO_Port GPIOC
-#define TMS_Pin GPIO_PIN_13
-#define TMS_GPIO_Port GPIOA
-#define TCK_Pin GPIO_PIN_14
-#define TCK_GPIO_Port GPIOA
-#define SWO_Pin GPIO_PIN_3
-#define SWO_GPIO_Port GPIOB
-
-/* ########################## Assert Selection ############################## */
-/**
-  * @brief Uncomment the line below to expanse the "assert_param" macro in the 
-  *        HAL drivers code
-  */
-/* #define USE_FULL_ASSERT    1U */
-
-/* USER CODE BEGIN Private defines */
-
-/* USER CODE END Private defines */
+#ifndef __STM32F4xx_HAL_DMA_EX_H
+#define __STM32F4xx_HAL_DMA_EX_H
 
 #ifdef __cplusplus
  extern "C" {
 #endif
-void _Error_Handler(char *, int);
 
-#define Error_Handler() _Error_Handler(__FILE__, __LINE__)
+/* Includes ------------------------------------------------------------------*/
+#include "stm32f4xx_hal_def.h"
+
+/** @addtogroup STM32F4xx_HAL_Driver
+  * @{
+  */
+
+/** @addtogroup DMAEx
+  * @{
+  */ 
+
+/* Exported types ------------------------------------------------------------*/
+/** @defgroup DMAEx_Exported_Types DMAEx Exported Types
+  * @brief DMAEx Exported types
+  * @{
+  */
+   
+/** 
+  * @brief  HAL DMA Memory definition  
+  */ 
+typedef enum
+{
+  MEMORY0      = 0x00U,    /*!< Memory 0     */
+  MEMORY1      = 0x01U     /*!< Memory 1     */
+}HAL_DMA_MemoryTypeDef;
+
+/**
+  * @}
+  */
+
+/* Exported functions --------------------------------------------------------*/
+/** @defgroup DMAEx_Exported_Functions DMAEx Exported Functions
+  * @brief   DMAEx Exported functions
+  * @{
+  */
+
+/** @defgroup DMAEx_Exported_Functions_Group1 Extended features functions
+  * @brief   Extended features functions
+  * @{
+  */
+
+/* IO operation functions *******************************************************/
+HAL_StatusTypeDef HAL_DMAEx_MultiBufferStart(DMA_HandleTypeDef *hdma, uint32_t SrcAddress, uint32_t DstAddress, uint32_t SecondMemAddress, uint32_t DataLength);
+HAL_StatusTypeDef HAL_DMAEx_MultiBufferStart_IT(DMA_HandleTypeDef *hdma, uint32_t SrcAddress, uint32_t DstAddress, uint32_t SecondMemAddress, uint32_t DataLength);
+HAL_StatusTypeDef HAL_DMAEx_ChangeMemory(DMA_HandleTypeDef *hdma, uint32_t Address, HAL_DMA_MemoryTypeDef memory);
+
+/**
+  * @}
+  */
+/**
+  * @}
+  */
+         
+/* Private functions ---------------------------------------------------------*/
+/** @defgroup DMAEx_Private_Functions DMAEx Private Functions
+  * @brief DMAEx Private functions
+  * @{
+  */
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __MAIN_H__ */
+#endif /*__STM32F4xx_HAL_DMA_EX_H*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

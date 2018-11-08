@@ -40,7 +40,6 @@
 #include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
-#include "StateMachine.h"
 
 /* USER CODE END Includes */
 
@@ -74,8 +73,7 @@ static void MX_USART2_UART_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	Queue q;
-	uint8_t  led[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f};
+
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -84,7 +82,6 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  Init_Queue(&q);
 
   /* USER CODE END Init */
 
@@ -106,17 +103,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  //GPIOC->ODR = 0x7f;
-	  stateMachine();
-	  /*for (int i=0;i<10;i++){
-		  HAL_Delay(500);
-		  GPIOC->ODR=led[i];
-	  }*/
 
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-
 
   }
   /* USER CODE END 3 */
@@ -219,20 +209,13 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, SEG_A_Pin|SEG_B_Pin|SEG_C_Pin|SEG_D_Pin 
-                          |SEG_E_Pin|SEG_F_Pin|SEG_G_Pin|SEG_H_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : SEG_A_Pin SEG_B_Pin SEG_C_Pin SEG_D_Pin 
-                           SEG_E_Pin SEG_F_Pin SEG_G_Pin SEG_H_Pin */
-  GPIO_InitStruct.Pin = SEG_A_Pin|SEG_B_Pin|SEG_C_Pin|SEG_D_Pin 
-                          |SEG_E_Pin|SEG_F_Pin|SEG_G_Pin|SEG_H_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  /*Configure GPIO pin : B1_Pin */
+  GPIO_InitStruct.Pin = B1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LD2_Pin */
   GPIO_InitStruct.Pin = LD2_Pin;
@@ -241,11 +224,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : Blue_Button_Pin */
-  GPIO_InitStruct.Pin = Blue_Button_Pin;
+  /*Configure GPIO pin : BlueButton_Pin */
+  GPIO_InitStruct.Pin = BlueButton_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(Blue_Button_GPIO_Port, &GPIO_InitStruct);
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(BlueButton_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);

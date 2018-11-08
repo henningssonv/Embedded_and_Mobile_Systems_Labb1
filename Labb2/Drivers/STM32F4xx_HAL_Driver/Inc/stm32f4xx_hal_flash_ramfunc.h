@@ -1,10 +1,12 @@
 /**
   ******************************************************************************
-  * @file    stm32f4xx_it.c
-  * @brief   Interrupt Service Routines.
+  * @file    stm32f4xx_hal_flash_ramfunc.h
+  * @author  MCD Application Team
+  * @brief   Header file of FLASH RAMFUNC driver.
   ******************************************************************************
+  * @attention
   *
-  * COPYRIGHT(c) 2018 STMicroelectronics
+  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -29,63 +31,65 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-  */
+  */ 
+
+/* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef __STM32F4xx_FLASH_RAMFUNC_H
+#define __STM32F4xx_FLASH_RAMFUNC_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+#if defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F411xE) || defined(STM32F446xx) || defined(STM32F412Zx) ||\
+    defined(STM32F412Vx) || defined(STM32F412Rx) || defined(STM32F412Cx)  
+
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx.h"
-#include "stm32f4xx_it.h"
+#include "stm32f4xx_hal_def.h"
 
-/* USER CODE BEGIN 0 */
-#include "StateMachine.h"
+/** @addtogroup STM32F4xx_HAL_Driver
+  * @{
+  */
 
-/* USER CODE END 0 */
+/** @addtogroup FLASH_RAMFUNC
+  * @{
+  */
 
-/* External variables --------------------------------------------------------*/
+/* Exported types ------------------------------------------------------------*/
+/* Exported macro ------------------------------------------------------------*/
+/* Exported functions --------------------------------------------------------*/
+/** @addtogroup FLASH_RAMFUNC_Exported_Functions
+  * @{
+  */
 
-/******************************************************************************/
-/*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
-/******************************************************************************/
+/** @addtogroup FLASH_RAMFUNC_Exported_Functions_Group1
+  * @{
+  */   
+__RAM_FUNC HAL_FLASHEx_StopFlashInterfaceClk(void);
+__RAM_FUNC HAL_FLASHEx_StartFlashInterfaceClk(void);
+__RAM_FUNC HAL_FLASHEx_EnableFlashSleepMode(void);
+__RAM_FUNC HAL_FLASHEx_DisableFlashSleepMode(void);
+/**
+  * @}
+  */ 
 
 /**
-* @brief This function handles System tick timer.
-*/
-void SysTick_Handler(void)
-{
-  /* USER CODE BEGIN SysTick_IRQn 0 */
-
-  /* USER CODE END SysTick_IRQn 0 */
-  HAL_IncTick();
-  HAL_SYSTICK_IRQHandler();
-  /* USER CODE BEGIN SysTick_IRQn 1 */
-
-  /* USER CODE END SysTick_IRQn 1 */
-}
-
-/******************************************************************************/
-/* STM32F4xx Peripheral Interrupt Handlers                                    */
-/* Add here the Interrupt Handlers for the used peripherals.                  */
-/* For the available peripheral interrupt handler names,                      */
-/* please refer to the startup file (startup_stm32f4xx.s).                    */
-/******************************************************************************/
+  * @}
+  */
 
 /**
-* @brief This function handles EXTI line[15:10] interrupts.
-*/
-void EXTI15_10_IRQHandler(void)
-{
-  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
-	HAL_GPIO_Callback(GPIO_PIN_13);
-	timeout_Callback();
+  * @}
+  */ 
 
-  /* USER CODE END EXTI15_10_IRQn 0 */
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_13);
-  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
-  //HAL_GPIO_Callback(GPIO_PIN_);
+/**
+  * @}
+  */
 
-  /* USER CODE END EXTI15_10_IRQn 1 */
+#endif /* STM32F410xx || STM32F411xE || STM32F446xx || STM32F412Zx || STM32F412Vx || STM32F412Rx || STM32F412Cx */  
+#ifdef __cplusplus
 }
+#endif
 
-/* USER CODE BEGIN 1 */
 
-/* USER CODE END 1 */
+#endif /* __STM32F4xx_FLASH_RAMFUNC_H */
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
