@@ -49,14 +49,31 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define B1_Pin GPIO_PIN_13
-#define B1_GPIO_Port GPIOC
+#define SEG_A_Pin GPIO_PIN_0
+#define SEG_A_GPIO_Port GPIOC
+#define SEG_B_Pin GPIO_PIN_1
+#define SEG_B_GPIO_Port GPIOC
+#define SEG_C_Pin GPIO_PIN_2
+#define SEG_C_GPIO_Port GPIOC
+#define SEG_D_Pin GPIO_PIN_3
+#define SEG_D_GPIO_Port GPIOC
 #define USART_TX_Pin GPIO_PIN_2
 #define USART_TX_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3
 #define USART_RX_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define SEG_E_Pin GPIO_PIN_4
+#define SEG_E_GPIO_Port GPIOC
+#define SEG_F_Pin GPIO_PIN_5
+#define SEG_F_GPIO_Port GPIOC
+#define Blue_Button_Pin GPIO_PIN_13
+#define Blue_Button_GPIO_Port GPIOB
+#define Blue_Button_EXTI_IRQn EXTI15_10_IRQn
+#define SEG_G_Pin GPIO_PIN_6
+#define SEG_G_GPIO_Port GPIOC
+#define SEG_H_Pin GPIO_PIN_7
+#define SEG_H_GPIO_Port GPIOC
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
