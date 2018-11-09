@@ -7,19 +7,31 @@
 #include "StateMachine.h"
 #include "stm32f4xx_hal.h"
 
-state_e state=IDLE_STATE;
+//========================= 7-SEG =======================
+state_e state = IDLE_STATE;
 event_e event = NOT_PRESSED_EVENT;
 int digit=0;
 uint8_t  led[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f};
 Queue q;
 int timeout=100;
 
+//========================= LED-BAR =====================
+Queue q_tick;
+state_e state_ledbar = WAIT_STATE;
+event_e event_ledbar = NO_TICK_EVENT;
+uint8_t led_bar[] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02};
+int bar_on_led=0;
+
 
 void printDigit(int digit){
 	GPIOC->ODR=led[digit];
 }
 
-void stateMachine(){
+void printDigit_ledbar(int bar_on_led){
+	GPIOB->ODR=led_bar[bar_on_led];
+}
+
+void stateMachine_7seg(){
 	event= ReadQueue(&q);
 
 	switch (state) {
@@ -63,6 +75,31 @@ void stateMachine(){
 
 }
 
+void stateMachine_ledbar(){
+	event_ledbar = ReadQueue(&q_tick);
+
+	switch (state_ledbar) {
+		case WAIT_STATE:
+			if (event_ledbar == TICK_EVENT){
+				state_ledbar = LIGHT_RIGHT_LEDBAR_STATE;
+			}
+			break;
+		case LIGHT_RIGHT_LEDBAR_STATE:
+			printDigit_ledbar(bar_on_led);
+			bar_on_led +=1;
+
+			if (bar_on_led >= 14){
+				bar_on_led = 0;
+			}
+			state_ledbar = WAIT_STATE;
+			WriteQueue(&q_tick, NO_TICK_EVENT);
+			break;
+
+		default:
+			break;
+	}
+}
+
 void Init_Queue(Queue *Q){
 	Q->readIx=0;
 	Q->writeIx=0;
@@ -101,6 +138,10 @@ void HAL_GPIO_Callback(uint16_t GPIO_Pin){
 
 void timeout_Callback(){
 	WriteQueue(&q, DEBOUNCE_EVENT);
+}
+
+void tick_Callback(){
+	WriteQueue(&q_tick, TICK_EVENT);
 }
 
 /*

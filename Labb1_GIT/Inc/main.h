@@ -67,6 +67,12 @@
 #define SEG_E_GPIO_Port GPIOC
 #define SEG_F_Pin GPIO_PIN_5
 #define SEG_F_GPIO_Port GPIOC
+#define LEDBAR_1_Pin GPIO_PIN_0
+#define LEDBAR_1_GPIO_Port GPIOB
+#define LEDBAR_2_Pin GPIO_PIN_1
+#define LEDBAR_2_GPIO_Port GPIOB
+#define LEDBAR_3_Pin GPIO_PIN_2
+#define LEDBAR_3_GPIO_Port GPIOB
 #define Blue_Button_Pin GPIO_PIN_13
 #define Blue_Button_GPIO_Port GPIOB
 #define Blue_Button_EXTI_IRQn EXTI15_10_IRQn
@@ -78,8 +84,16 @@
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
-#define SWO_Pin GPIO_PIN_3
-#define SWO_GPIO_Port GPIOB
+#define LEDBAR_4_Pin GPIO_PIN_3
+#define LEDBAR_4_GPIO_Port GPIOB
+#define LEDBAR_5_Pin GPIO_PIN_4
+#define LEDBAR_5_GPIO_Port GPIOB
+#define LEDBAR_6_Pin GPIO_PIN_5
+#define LEDBAR_6_GPIO_Port GPIOB
+#define LEDBAR_7_Pin GPIO_PIN_6
+#define LEDBAR_7_GPIO_Port GPIOB
+#define LEDBAR_8_Pin GPIO_PIN_7
+#define LEDBAR_8_GPIO_Port GPIOB
 
 /* ########################## Assert Selection ############################## */
 /**

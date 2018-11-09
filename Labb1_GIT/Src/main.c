@@ -45,6 +45,8 @@
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
+TIM_HandleTypeDef htim2;
+
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -56,6 +58,7 @@ UART_HandleTypeDef huart2;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_TIM2_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -75,7 +78,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	Queue q;
-	uint8_t  led[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f};
+	Queue q_tick;
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -85,6 +88,7 @@ int main(void)
 
   /* USER CODE BEGIN Init */
   Init_Queue(&q);
+  Init_Queue(&q_tick);
 
   /* USER CODE END Init */
 
@@ -98,7 +102,9 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_Base_Start_IT(&htim2); // Startar klockan
 
   /* USER CODE END 2 */
 
@@ -107,12 +113,8 @@ int main(void)
   while (1)
   {
 	  //GPIOC->ODR = 0x7f;
-	  stateMachine();
-	  /*for (int i=0;i<10;i++){
-		  HAL_Delay(500);
-		  GPIOC->ODR=led[i];
-	  }*/
-
+	  stateMachine_7seg();
+	  stateMachine_ledbar();
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -181,6 +183,38 @@ void SystemClock_Config(void)
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
+/* TIM2 init function */
+static void MX_TIM2_Init(void)
+{
+
+  TIM_ClockConfigTypeDef sClockSourceConfig;
+  TIM_MasterConfigTypeDef sMasterConfig;
+
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 999;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 839;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+}
+
 /* USART2 init function */
 static void MX_USART2_UART_Init(void)
 {
@@ -225,6 +259,10 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, LEDBAR_1_Pin|LEDBAR_2_Pin|LEDBAR_3_Pin|LEDBAR_4_Pin 
+                          |LEDBAR_5_Pin|LEDBAR_6_Pin|LEDBAR_7_Pin|LEDBAR_8_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pins : SEG_A_Pin SEG_B_Pin SEG_C_Pin SEG_D_Pin 
                            SEG_E_Pin SEG_F_Pin SEG_G_Pin SEG_H_Pin */
   GPIO_InitStruct.Pin = SEG_A_Pin|SEG_B_Pin|SEG_C_Pin|SEG_D_Pin 
@@ -240,6 +278,15 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LEDBAR_1_Pin LEDBAR_2_Pin LEDBAR_3_Pin LEDBAR_4_Pin 
+                           LEDBAR_5_Pin LEDBAR_6_Pin LEDBAR_7_Pin LEDBAR_8_Pin */
+  GPIO_InitStruct.Pin = LEDBAR_1_Pin|LEDBAR_2_Pin|LEDBAR_3_Pin|LEDBAR_4_Pin 
+                          |LEDBAR_5_Pin|LEDBAR_6_Pin|LEDBAR_7_Pin|LEDBAR_8_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : Blue_Button_Pin */
   GPIO_InitStruct.Pin = Blue_Button_Pin;
